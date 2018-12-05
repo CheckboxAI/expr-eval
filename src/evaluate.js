@@ -12,9 +12,9 @@ export default function evaluate(tokens, expr, values) {
     } else if (type === IOP2) {
       n2 = nstack.pop();
       n1 = nstack.pop();
-      if (item.value === 'and') {
+      if (item.value === '&&') {
         nstack.push(n1 ? !!evaluate(n2, expr, values) : false);
-      } else if (item.value === 'or') {
+      } else if (item.value === '||') {
         nstack.push(n1 ? true : !!evaluate(n2, expr, values));
       } else {
         f = expr.binaryOps[item.value];

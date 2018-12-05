@@ -92,21 +92,21 @@ ParserState.prototype.parseConditionalExpression = function (instr) {
 
 ParserState.prototype.parseOrExpression = function (instr) {
   this.parseAndExpression(instr);
-  while (this.accept(TOP, 'or')) {
+  while (this.accept(TOP, '||')) {
     var falseBranch = [];
     this.parseAndExpression(falseBranch);
     instr.push(new Instruction(IEXPR, falseBranch));
-    instr.push(binaryInstruction('or'));
+    instr.push(binaryInstruction('||'));
   }
 };
 
 ParserState.prototype.parseAndExpression = function (instr) {
   this.parseComparison(instr);
-  while (this.accept(TOP, 'and')) {
+  while (this.accept(TOP, '&&')) {
     var trueBranch = [];
     this.parseComparison(trueBranch);
     instr.push(new Instruction(IEXPR, trueBranch));
-    instr.push(binaryInstruction('and'));
+    instr.push(binaryInstruction('&&'));
   }
 };
 
@@ -121,7 +121,7 @@ ParserState.prototype.parseComparison = function (instr) {
   }
 };
 
-var ADD_SUB_OPERATORS = ['+', '-', '||'];
+var ADD_SUB_OPERATORS = ['+', '-', '--'];
 
 ParserState.prototype.parseAddSub = function (instr) {
   this.parseTerm(instr);

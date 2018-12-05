@@ -362,16 +362,6 @@ describe('Parser', function () {
       assert.throws(function () { parser.parse('1 <= 2'); }, /</);
     });
 
-    it('should allow concatenate operator to be disabled', function () {
-      var parser = new Parser({
-        operators: {
-          concatenate: false
-        }
-      });
-
-      assert.throws(function () { parser.parse('"as" || "df"'); }, /\|/);
-    });
-
     it('should allow conditional operator to be disabled', function () {
       var parser = new Parser({
         operators: {
@@ -390,16 +380,6 @@ describe('Parser', function () {
       });
 
       assert.throws(function () { parser.parse('2 / 3'); }, /\//);
-    });
-
-    it('should allow factorial operator to be disabled', function () {
-      var parser = new Parser({
-        operators: {
-          factorial: false
-        }
-      });
-
-      assert.throws(function () { parser.parse('5!'); }, /!/);
     });
 
     it('should allow in operator to be enabled', function () {

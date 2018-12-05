@@ -65,9 +65,9 @@ export function Parser(options) {
     '-': neg,
     '+': Number,
     exp: Math.exp,
-    not: not,
+    '!': not,
     length: stringLength,
-    '!': factorial
+    'fac': factorial
   };
 
   this.binaryOps = {
@@ -77,15 +77,15 @@ export function Parser(options) {
     '/': div,
     '%': mod,
     '^': Math.pow,
-    '||': concat,
+    '--': concat,
     '==': equal,
     '!=': notEqual,
     '>': greaterThan,
     '<': lessThan,
     '>=': greaterThanEqual,
     '<=': lessThanEqual,
-    and: andOperator,
-    or: orOperator,
+    '&&': andOperator,
+    '||': orOperator,
     'in': inOperator
   };
 

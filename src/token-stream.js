@@ -378,6 +378,13 @@ TokenStream.prototype.isOperator = function () {
     } else {
       return false;
     }
+  } else if (c === '&') {
+    if (this.expression.charAt(this.pos + 1) === '&') {
+      this.current = this.newToken(TOP, '&&');
+      this.pos++;
+    } else {
+      return false;
+    }
   } else if (c === '=') {
     if (this.expression.charAt(this.pos + 1) === '=') {
       this.current = this.newToken(TOP, '==');
@@ -412,17 +419,17 @@ var optionNameMap = {
   '/': 'divide',
   '%': 'remainder',
   '^': 'power',
-  '!': 'factorial',
+  'reserved': 'factorial',
   '<': 'comparison',
   '>': 'comparison',
   '<=': 'comparison',
   '>=': 'comparison',
   '==': 'comparison',
   '!=': 'comparison',
-  '||': 'concatenate',
-  'and': 'logical',
-  'or': 'logical',
-  'not': 'logical',
+  'reserved2': 'concatenate',
+  '&&': 'logical',
+  '||': 'logical',
+  '!': 'logical',
   '?': 'conditional',
   ':': 'conditional'
 };

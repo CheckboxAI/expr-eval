@@ -20,12 +20,10 @@ export default function expressionToString(tokens, toJS) {
       if (toJS) {
         if (f === '^') {
           nstack.push('Math.pow(' + n1 + ', ' + n2 + ')');
-        } else if (f === 'and') {
+        } else if (f === '&&') {
           nstack.push('(!!' + n1 + ' && !!' + n2 + ')');
-        } else if (f === 'or') {
-          nstack.push('(!!' + n1 + ' || !!' + n2 + ')');
         } else if (f === '||') {
-          nstack.push('(String(' + n1 + ') + String(' + n2 + '))');
+          nstack.push('(!!' + n1 + ' || !!' + n2 + ')');
         } else if (f === '==') {
           nstack.push('(' + n1 + ' === ' + n2 + ')');
         } else if (f === '!=') {
@@ -54,15 +52,15 @@ export default function expressionToString(tokens, toJS) {
       if (f === '-' || f === '+') {
         nstack.push('(' + f + n1 + ')');
       } else if (toJS) {
-        if (f === 'not') {
+        if (f === '!') {
           nstack.push('(' + '!' + n1 + ')');
-        } else if (f === '!') {
+        } else if (f === 'fac') {
           nstack.push('fac(' + n1 + ')');
         } else {
           nstack.push(f + '(' + n1 + ')');
         }
       } else if (f === '!') {
-        nstack.push('(' + n1 + '!)');
+        nstack.push('(' + '!' + n1 + ')');
       } else {
         nstack.push('(' + f + ' ' + n1 + ')');
       }
