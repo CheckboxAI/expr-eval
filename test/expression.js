@@ -194,8 +194,8 @@ describe('Expression', function () {
       assert.deepEqual(expr.simplify({ y: 4, z: { y: { x: 5 } } }).variables(), ['x']);
     });
 
-    it('a or b ? c + d : e * f', function () {
-      assert.deepEqual(Parser.parse('a or b ? c + d : e * f').variables(), ['a', 'b', 'c', 'd', 'e', 'f']);
+    it('a || b ? c + d : e * f', function () {
+      assert.deepEqual(Parser.parse('a || b ? c + d : e * f').variables(), ['a', 'b', 'c', 'd', 'e', 'f']);
     });
 
     it('$x * $y_+$a1*$z - $b2', function () {
@@ -275,8 +275,8 @@ describe('Expression', function () {
       assert.deepEqual(expr.simplify({ y: 4, z: { y: { x: 5 } } }).symbols(), ['x', 'atan2']);
     });
 
-    it('a or b ? c + d : e * f', function () {
-      assert.deepEqual(Parser.parse('a or b ? c + d : e * f').symbols(), ['a', 'b', 'c', 'd', 'e', 'f']);
+    it('a || b ? c + d : e * f', function () {
+      assert.deepEqual(Parser.parse('a || b ? c + d : e * f').symbols(), ['a', 'b', 'c', 'd', 'e', 'f']);
     });
 
     it('user.age + 2', function () {
@@ -405,13 +405,13 @@ describe('Expression', function () {
       assert.strictEqual(parser.parse('hypot(random(), max(2, x, y))').toString(), 'hypot(random(), max(2, x, y))');
     });
 
-    it('not 0 or 1 and 2', function () {
-      assert.strictEqual(parser.parse('not 0 or 1 and 2').toString(), '((not 0) or ((1 and (2))))');
+    it('! 0 || 1 && 2', function () {
+      assert.strictEqual(parser.parse('! 0 || 1 && 2').toString(), '((! 0) || ((1 && (2))))');
     });
 
-    it('a < b or c > d and e <= f or g >= h and i == j or k != l', function () {
-      assert.strictEqual(parser.parse('a < b or c > d and e <= f or g >= h and i == j or k != l').toString(),
-        '((((a < b) or (((c > d) and ((e <= f))))) or (((g >= h) and ((i == j))))) or ((k != l)))');
+    it('a < b || c > d && e <= f || g >= h && i == j || k != l', function () {
+      assert.strictEqual(parser.parse('a < b || c > d && e <= f || g >= h && i == j || k != l').toString(),
+        '((((a < b) || (((c > d) && ((e <= f))))) || (((g >= h) && ((i == j))))) || ((k != l)))');
     });
 
     it('\'as\' || \'df\'', function () {
@@ -567,45 +567,45 @@ describe('Expression', function () {
       assert.strictEqual(parser.parse('hypot(f(), max(2, x, y))').toJSFunction('f, x, y')(function () { return 3; }, 4, 1), 5);
     });
 
-    it('not x or y and z', function () {
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 0, 0), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 0, 1), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 1, 0), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 1, 1), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 0, 0), false);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 0, 1), false);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 1, 0), false);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 1, 1), true);
+    it('! x || y && z', function () {
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(0, 0, 0), true);
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(0, 0, 1), true);
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(0, 1, 0), true);
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(0, 1, 1), true);
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(1, 0, 0), false);
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(1, 0, 1), false);
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(1, 1, 0), false);
+      assert.strictEqual(parser.parse('! x || y && z').toJSFunction('x,y,z')(1, 1, 1), true);
     });
 
-    it('a < b or c > d', function () {
-      assert.strictEqual(parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(1, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(2, 2, 3, 4), false);
-      assert.strictEqual(parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(2, 2, 5, 4), true);
+    it('a < b || c > d', function () {
+      assert.strictEqual(parser.parse('a < b || c > d').toJSFunction('a,b,c,d')(1, 2, 3, 4), true);
+      assert.strictEqual(parser.parse('a < b || c > d').toJSFunction('a,b,c,d')(2, 2, 3, 4), false);
+      assert.strictEqual(parser.parse('a < b || c > d').toJSFunction('a,b,c,d')(2, 2, 5, 4), true);
     });
 
-    it('e <= f or g >= h', function () {
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(1, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(2, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 5, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 4, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 3, 4), false);
+    it('e <= f || g >= h', function () {
+      assert.strictEqual(parser.parse('e <= f || g >= h').toJSFunction('e,f,g,h')(1, 2, 3, 4), true);
+      assert.strictEqual(parser.parse('e <= f || g >= h').toJSFunction('e,f,g,h')(2, 2, 3, 4), true);
+      assert.strictEqual(parser.parse('e <= f || g >= h').toJSFunction('e,f,g,h')(3, 2, 5, 4), true);
+      assert.strictEqual(parser.parse('e <= f || g >= h').toJSFunction('e,f,g,h')(3, 2, 4, 4), true);
+      assert.strictEqual(parser.parse('e <= f || g >= h').toJSFunction('e,f,g,h')(3, 2, 3, 4), false);
     });
 
-    it('i == j or k != l', function () {
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(1, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(2, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(1, 2, 4, 4), false);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')('2', 2, 4, 4), false);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')('2', 2, '4', 4), true);
+    it('i == j || k != l', function () {
+      assert.strictEqual(parser.parse('i == j || k != l').toJSFunction('i,j,k,l')(1, 2, 3, 4), true);
+      assert.strictEqual(parser.parse('i == j || k != l').toJSFunction('i,j,k,l')(2, 2, 3, 4), true);
+      assert.strictEqual(parser.parse('i == j || k != l').toJSFunction('i,j,k,l')(1, 2, 4, 4), false);
+      assert.strictEqual(parser.parse('i == j || k != l').toJSFunction('i,j,k,l')('2', 2, 4, 4), false);
+      assert.strictEqual(parser.parse('i == j || k != l').toJSFunction('i,j,k,l')('2', 2, '4', 4), true);
     });
 
-    it('short-circuits and', function () {
-      assert.strictEqual(parser.parse('a and fail()').toJSFunction('a')(false), false);
+    it('short-circuits &&', function () {
+      assert.strictEqual(parser.parse('a && fail()').toJSFunction('a')(false), false);
     });
 
-    it('short-circuits or', function () {
-      assert.strictEqual(parser.parse('a or fail()').toJSFunction('a')(true), true);
+    it('short-circuits ||', function () {
+      assert.strictEqual(parser.parse('a || fail()').toJSFunction('a')(true), true);
     });
 
     it('\'as\' || s', function () {
@@ -621,8 +621,8 @@ describe('Expression', function () {
       assert.strictEqual(parser.parse('"A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G"').toJSFunction()(), 'A\bB\tC\nD\fE\r\'F\\G');
     });
 
-    it('"\\u2028 and \\u2029"', function () {
-      assert.strictEqual(parser.parse('"\\u2028 and \\u2029 \\u2028\\u2029"').toJSFunction()(), '\u2028 and \u2029 \u2028\u2029');
+    it('"\\u2028 && \\u2029"', function () {
+      assert.strictEqual(parser.parse('"\\u2028 && \\u2029 \\u2028\\u2029"').toJSFunction()(), '\u2028 && \u2029 \u2028\u2029');
     });
 
     it('(x - 1)!', function () {

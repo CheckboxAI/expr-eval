@@ -137,82 +137,82 @@ describe('Operators', function () {
     });
   });
 
-  describe('and operator', function () {
-    it('1 and 0', function () {
-      assert.strictEqual(Parser.evaluate('1 and 0'), false);
+  describe('&& operator', function () {
+    it('1 && 0', function () {
+      assert.strictEqual(Parser.evaluate('1 && 0'), false);
     });
 
-    it('1 and 1', function () {
-      assert.strictEqual(Parser.evaluate('1 and 1'), true);
+    it('1 && 1', function () {
+      assert.strictEqual(Parser.evaluate('1 && 1'), true);
     });
 
-    it('0 and 0', function () {
-      assert.strictEqual(Parser.evaluate('0 and 0'), false);
+    it('0 && 0', function () {
+      assert.strictEqual(Parser.evaluate('0 && 0'), false);
     });
 
-    it('0 and 1', function () {
-      assert.strictEqual(Parser.evaluate('0 and 1'), false);
+    it('0 && 1', function () {
+      assert.strictEqual(Parser.evaluate('0 && 1'), false);
     });
 
-    it('0 and 1 and 0', function () {
-      assert.strictEqual(Parser.evaluate('0 and 1 and 0'), false);
+    it('0 && 1 && 0', function () {
+      assert.strictEqual(Parser.evaluate('0 && 1 && 0'), false);
     });
 
-    it('1 and 1 and 0', function () {
-      assert.strictEqual(Parser.evaluate('1 and 1 and 0'), false);
+    it('1 && 1 && 0', function () {
+      assert.strictEqual(Parser.evaluate('1 && 1 && 0'), false);
     });
 
     it('skips rhs when lhs is false', function () {
       var notCalled = spy(returnFalse);
 
-      assert.strictEqual(Parser.evaluate('false and notCalled()', { notCalled: notCalled }), false);
+      assert.strictEqual(Parser.evaluate('false && notCalled()', { notCalled: notCalled }), false);
       assert.strictEqual(notCalled.called, false);
     });
 
     it('evaluates rhs when lhs is true', function () {
       var called = spy(returnFalse);
 
-      assert.strictEqual(Parser.evaluate('true and called()', { called: called }), false);
+      assert.strictEqual(Parser.evaluate('true && called()', { called: called }), false);
       assert.strictEqual(called.called, true);
     });
   });
 
-  describe('or operator', function () {
-    it('1 or 0', function () {
-      assert.strictEqual(Parser.evaluate('1 or 0'), true);
+  describe('|| operator', function () {
+    it('1 || 0', function () {
+      assert.strictEqual(Parser.evaluate('1 || 0'), true);
     });
 
-    it('1 or 1', function () {
-      assert.strictEqual(Parser.evaluate('1 or 1'), true);
+    it('1 || 1', function () {
+      assert.strictEqual(Parser.evaluate('1 || 1'), true);
     });
 
-    it('0 or 0', function () {
-      assert.strictEqual(Parser.evaluate('0 or 0'), false);
+    it('0 || 0', function () {
+      assert.strictEqual(Parser.evaluate('0 || 0'), false);
     });
 
-    it('0 or 1', function () {
-      assert.strictEqual(Parser.evaluate('0 or 1'), true);
+    it('0 || 1', function () {
+      assert.strictEqual(Parser.evaluate('0 || 1'), true);
     });
 
-    it('0 or 1 or 0', function () {
-      assert.strictEqual(Parser.evaluate('0 or 1 or 0'), true);
+    it('0 || 1 || 0', function () {
+      assert.strictEqual(Parser.evaluate('0 || 1 || 0'), true);
     });
 
-    it('1 or 1 or 0', function () {
-      assert.strictEqual(Parser.evaluate('1 or 1 or 0'), true);
+    it('1 || 1 || 0', function () {
+      assert.strictEqual(Parser.evaluate('1 || 1 || 0'), true);
     });
 
     it('skips rhs when lhs is true', function () {
       var notCalled = spy(returnFalse);
 
-      assert.strictEqual(Parser.evaluate('true or notCalled()', { notCalled: notCalled }), true);
+      assert.strictEqual(Parser.evaluate('true || notCalled()', { notCalled: notCalled }), true);
       assert.strictEqual(notCalled.called, false);
     });
 
     it('evaluates rhs when lhs is false', function () {
       var called = spy(returnTrue);
 
-      assert.strictEqual(Parser.evaluate('false or called()', { called: called }), true);
+      assert.strictEqual(Parser.evaluate('false || called()', { called: called }), true);
       assert.strictEqual(called.called, true);
     });
   });
@@ -245,37 +245,37 @@ describe('Operators', function () {
     });
   });
 
-  describe('not operator', function () {
-    it('not 1', function () {
-      assert.strictEqual(Parser.evaluate('not 1'), false);
+  describe('! operator', function () {
+    it('! 1', function () {
+      assert.strictEqual(Parser.evaluate('! 1'), false);
     });
 
-    it('not true', function () {
-      assert.strictEqual(Parser.evaluate('not true'), false);
+    it('! true', function () {
+      assert.strictEqual(Parser.evaluate('! true'), false);
     });
 
-    it('not 0', function () {
-      assert.strictEqual(Parser.evaluate('not 0'), true);
+    it('! 0', function () {
+      assert.strictEqual(Parser.evaluate('! 0'), true);
     });
 
-    it('not false', function () {
-      assert.strictEqual(Parser.evaluate('not false'), true);
+    it('! false', function () {
+      assert.strictEqual(Parser.evaluate('! false'), true);
     });
 
-    it('not 4', function () {
-      assert.strictEqual(Parser.evaluate('not 4'), false);
+    it('! 4', function () {
+      assert.strictEqual(Parser.evaluate('! 4'), false);
     });
 
-    it('1 and not 0', function () {
-      assert.strictEqual(Parser.evaluate('1 and not 0'), true);
+    it('1 && ! 0', function () {
+      assert.strictEqual(Parser.evaluate('1 && ! 0'), true);
     });
 
-    it('not \'0\'', function () {
-      assert.strictEqual(Parser.evaluate('not \'0\''), false);
+    it('! \'0\'', function () {
+      assert.strictEqual(Parser.evaluate('! \'0\''), false);
     });
 
-    it('not \'\'', function () {
-      assert.strictEqual(Parser.evaluate('not \'\''), true);
+    it('! \'\'', function () {
+      assert.strictEqual(Parser.evaluate('! \'\''), true);
     });
   });
 
@@ -689,7 +689,7 @@ describe('Operators', function () {
     it('rounds up to the nearest integer', function () {
       assert.strictEqual(parser.evaluate('ceil 0'), 0);
       assert.strictEqual(parser.evaluate('ceil 0.5'), 1);
-      assert.strictEqual(parser.evaluate('ceil -0.5'), 0);
+      assert.strictEqual(parser.evaluate('ceil -0.5'), -0);
       assert.strictEqual(parser.evaluate('ceil 1'), 1);
       assert.strictEqual(parser.evaluate('ceil -1'), -1);
       assert.strictEqual(parser.evaluate('ceil 1.000001'), 2);
@@ -725,9 +725,9 @@ describe('Operators', function () {
     it('rounds to the nearest integer', function () {
       assert.strictEqual(parser.evaluate('round 0'), 0);
       assert.strictEqual(parser.evaluate('round 0.4999'), 0);
-      assert.strictEqual(parser.evaluate('round -0.4999'), 0);
+      assert.strictEqual(parser.evaluate('round -0.4999'), -0);
       assert.strictEqual(parser.evaluate('round 0.5'), 1);
-      assert.strictEqual(parser.evaluate('round -0.5'), 0);
+      assert.strictEqual(parser.evaluate('round -0.5'), -0);
       assert.strictEqual(parser.evaluate('round 0.5001'), 1);
       assert.strictEqual(parser.evaluate('round -0.5001'), -1);
       assert.strictEqual(parser.evaluate('round 1'), 1);
@@ -751,11 +751,11 @@ describe('Operators', function () {
     it('rounds toward zero', function () {
       assert.strictEqual(parser.evaluate('trunc 0'), 0);
       assert.strictEqual(parser.evaluate('trunc 0.4999'), 0);
-      assert.strictEqual(parser.evaluate('trunc -0.4999'), 0);
+      assert.strictEqual(parser.evaluate('trunc -0.4999'), -0);
       assert.strictEqual(parser.evaluate('trunc 0.5'), 0);
-      assert.strictEqual(parser.evaluate('trunc -0.5'), 0);
+      assert.strictEqual(parser.evaluate('trunc -0.5'), -0);
       assert.strictEqual(parser.evaluate('trunc 0.5001'), 0);
-      assert.strictEqual(parser.evaluate('trunc -0.5001'), 0);
+      assert.strictEqual(parser.evaluate('trunc -0.5001'), -0);
       assert.strictEqual(parser.evaluate('trunc 1'), 1);
       assert.strictEqual(parser.evaluate('trunc -1'), -1);
       assert.strictEqual(parser.evaluate('trunc 1.000001'), 1);
@@ -806,7 +806,7 @@ describe('Operators', function () {
     });
 
     it('negates its argument', function () {
-      assert.strictEqual(parser.evaluate('-0'), 0);
+      assert.strictEqual(parser.evaluate('-0'), -0);
       assert.strictEqual(parser.evaluate('-0.5'), -0.5);
       assert.strictEqual(parser.evaluate('-1'), -1);
       assert.strictEqual(parser.evaluate('-123'), -123);
